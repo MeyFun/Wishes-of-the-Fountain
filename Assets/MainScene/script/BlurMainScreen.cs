@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-[RequireComponent(typeof(CanvasGroup))] // Добавляем CanvasGroup для плавного появления контроллов
+[RequireComponent(typeof(CanvasGroup))]
 public class BlurMainScreen : MonoBehaviour
 {
     [Header("Настройка фонов (UI Images)")]
@@ -25,7 +25,6 @@ public class BlurMainScreen : MonoBehaviour
 
     void Awake()
     {
-        // Получаем или добавляем CanvasGroup на панель контроллов для плавного появления
         if (settingsControlsPanel)
         {
             controlsCanvasGroup = settingsControlsPanel.GetComponent<CanvasGroup>();
@@ -35,47 +34,32 @@ public class BlurMainScreen : MonoBehaviour
             }
         }
     }
-
-    // --- ЛОГИКА ВКЛЮЧЕНИЯ (Вход в Настройки) ---
-
-    // Этот метод вызывается Unity автоматически при SetActive(true) на SettingsMenu
+    
     void OnEnable()
     {
-        // Подготовка к анимации входа:
-        // 1. Обычный фон полностью виден (Alpha = 1)
         SetImageAlpha(normalBackground, 1f);
 
-        // 2. Размытый фон активен под ним
         if (blurredBackground) blurredBackground.gameObject.SetActive(true);
 
-        // 3. Скрываем элементы управления настройками (через Alpha), чтобы они плавно появились позже
         if (controlsCanvasGroup)
         {
-            settingsControlsPanel.SetActive(true); // Включаем сам объект
-            controlsCanvasGroup.alpha = 0f;       // Но делаем прозрачным
+            settingsControlsPanel.SetActive(true);
+            controlsCanvasGroup.alpha = 0f;
         }
 
-        // 4. Запускаем корутину плавного исчезновения обычного фона
-        StartFade(0f, true); // targetAlpha = 0 (прозрачный), isEntering = true
+        StartFade(0f, true);
     }
 
-
-    // --- ЛОГИКА ВЫХОДА (Возврат в Главное Меню) ---
-
-    // **ЭТУ ФУНКЦИЮ ПОВЕСИТЬ НА КНОПКУ "НАЗАД" В НАСТРОЙКАХ**
-    // В поле GameObject перетащите объект MainMenu из иерархии.
     public void CloseSettingsAndReturn(GameObject mainMenuToEnable)
     {
         if (mainMenuToEnable == null)
         {
             Debug.LogError("Ошибка: Не указан объект MainMenu для включения в кнопке Назад!");
-            // Если забыли указать меню, просто резко закрываем настройки, чтобы не "зависло"
             gameObject.SetActive(false);
             return;
         }
 
-        // Запускаем корутину плавного появления обычного фона обратно
-        StartFade(1f, false, mainMenuToEnable); // targetAlpha = 1 (видимый), isEntering = false
+        StartFade(1f, false, mainMenuToEnable);
     }
 
 
@@ -83,16 +67,13 @@ public class BlurMainScreen : MonoBehaviour
 
     private void StartFade(float targetAlpha, bool isEntering, GameObject menuToEnable = null)
     {
-        // Если старая анимация еще идет, останавливаем её
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
 
-        // Запускаем новую анимацию
         fadeCoroutine = StartCoroutine(FadeRoutine(targetAlpha, isEntering, menuToEnable));
     }
 
     IEnumerator FadeRoutine(float targetAlpha, bool isEntering, GameObject menuToEnable)
     {
-        // Проверка на ошибки
         if (normalBackground == null)
         {
             Debug.LogError("Ошибка: Не назначен Normal Background в скрипте BlurSettingsTransition на " + gameObject.name);
