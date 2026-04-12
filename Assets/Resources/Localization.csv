@@ -11,13 +11,19 @@ buttonBack,Назад,Back
 buttonCont,Продолжить,Continue
 buttonReturn,Вернуться,Return
 skipText,Enter для пропуска анимациии,Enter for skip animation
-WishText1,Найди потерянный амулет у фонтана,Find the lost amulet by the fountain
-WishText2,Принеси мне золотое яблоко,Bring me a golden apple
-WishText3,Помоги мне собрать 10 искр света,Help me collect 10 sparks of light
-WishText4,Помоги приготовить яичницу,Help me cooking the eggs
-WishText5,Помоги собрать вещи в доме,Help me pack my things in the house
+WishText1,Помоги собрать вещи в доме,Help me pack my things in the house
+WishText2,Забери доставку и привези мне,Pick up the delivery and bring it to me
+WishText3,Найди потерянный амулет у фонтана,Find the lost amulet by the fountain
 TrashBit,Мусорная корзина,Recycle bin
 VictoryText,ПОБЕДА,VICTORY
 VictoryText2,Вы успешно собрали все предметы,You have successfully collected all the items
 FailedText,ПРОИГРЫШ,FAILED
 FailedText2,Вы не успели собрать все предметы. В следующий раз будьте быстрее,You didn't have time to collect all the items. Be faster next time
+StartRoad,НАЧАЛО,START
+EndRoad,КОНЕЦ,FINISH
+VictoryRoadText,Вы успешно добрались до человека и отдали заказ,You have successfully reached the person and placed the order
+FailedRoadText,Вы попали в аварию и не успели доставить заказ,You were in an accident and didn't have time to deliver your order
+TextAmulet,У меня желтый амулет с голубым солнцем в центре,I have a yellow amulet with a blue sun in the center
+VictoryAmuletText,Вы нашли нужный амулет и отдали его мальчику,You found the right amulet and gave it to the boy
+FailedAmuletText,Вы нашли не тот предмет. Мальчик разочаровался в вас и убежал в слезах,You found the wrong object. The boy was disappointed in you and ran away in tears.
+DeletePrefsButton,Очистить PlayerPrefs,Clear PlayerPrefs

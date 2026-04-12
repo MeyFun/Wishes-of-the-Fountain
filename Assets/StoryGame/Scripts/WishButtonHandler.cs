@@ -47,4 +47,16 @@ public class WishButtonHandler : MonoBehaviour
             Debug.LogError($"[Continue] Ошибка: Индекс {index} вне диапазона массива уровней!");
         }
     }
+
+    public void OnWishButtonClick(int index)
+    {
+        // Выключаем все уровни на всякий случай
+        foreach (var level in wishLevels) level.SetActive(false);
+
+        // Включаем нужный
+        if (index < wishLevels.Length)
+        {
+            wishLevels[index].SetActive(true);
+        }
+    }
 }

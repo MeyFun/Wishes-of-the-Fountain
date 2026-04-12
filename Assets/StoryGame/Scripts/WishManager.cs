@@ -15,8 +15,8 @@ public class WishManager : MonoBehaviour
 
     void GenerateRandomWish()
     {
-        // 1. Выбираем случайное число от 1 до 5
-        selectedWishIndex = Random.Range(1, 6);
+        // 1. Выбираем случайное число от 1 до 3
+        selectedWishIndex = Random.Range(1, 4);
 
         // 2. Сохраняем ID желания, чтобы потом знать, какой уровень загружать
         PlayerPrefs.SetInt("SavedWishID", selectedWishIndex);
