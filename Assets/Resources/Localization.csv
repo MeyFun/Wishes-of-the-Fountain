@@ -10,8 +10,14 @@ menuEffects,Эффекты,Effects
 buttonBack,Назад,Back
 buttonCont,Продолжить,Continue
 buttonReturn,Вернуться,Return
+skipText,Enter для пропуска анимациии,Enter for skip animation
 WishText1,Найди потерянный амулет у фонтана,Find the lost amulet by the fountain
 WishText2,Принеси мне золотое яблоко,Bring me a golden apple
 WishText3,Помоги мне собрать 10 искр света,Help me collect 10 sparks of light
 WishText4,Помоги приготовить яичницу,Help me cooking the eggs
 WishText5,Помоги собрать вещи в доме,Help me pack my things in the house
+TrashBit,Мусорная корзина,Recycle bin
+VictoryText,ПОБЕДА,VICTORY
+VictoryText2,Вы успешно собрали все предметы,You have successfully collected all the items
+FailedText,ПРОИГРЫШ,FAILED
+FailedText2,Вы не успели собрать все предметы. В следующий раз будьте быстрее,You didn't have time to collect all the items. Be faster next time
