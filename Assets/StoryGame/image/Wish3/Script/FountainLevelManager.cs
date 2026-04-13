@@ -15,7 +15,7 @@ public class FountainLevelManager : MonoBehaviour
     public GameObject loseWindow;
 
     [Header("Objects Setup")]
-    public List<ItemData> allItems; // Перетащи сюда все предметы (и нужный, и мусор)
+    public List<ItemData> allItems;
 
 
     public string gameKey = "Level_Amulet_Completed";
@@ -23,7 +23,6 @@ public class FountainLevelManager : MonoBehaviour
 
     void Awake()
     {
-        // Запоминаем начальные позиции всех предметов
         foreach (var item in allItems)
         {
             if (item.obj != null)
@@ -44,7 +43,6 @@ public class FountainLevelManager : MonoBehaviour
         winWindow.SetActive(false);
         loseWindow.SetActive(false);
 
-        // Возвращаем все предметы на места и включаем их
         foreach (var item in allItems)
         {
             if (item.obj != null)
@@ -52,7 +50,6 @@ public class FountainLevelManager : MonoBehaviour
                 item.obj.SetActive(true);
                 item.obj.GetComponent<RectTransform>().anchoredPosition = item.startPos;
 
-                // Включаем возможность взаимодействия (Raycast)
                 CanvasGroup cg = item.obj.GetComponent<CanvasGroup>();
                 if (cg != null) cg.blocksRaycasts = true;
             }
@@ -61,10 +58,9 @@ public class FountainLevelManager : MonoBehaviour
 
     public void GameOver(bool success)
     {
-        if (!gameActive) return; // Чтобы нельзя было проиграть/выиграть дважды за раз
+        if (!gameActive) return;
         gameActive = false;
 
-        // БЛОКИРОВКА: Выключаем Raycast у всех предметов, чтобы их нельзя было больше двигать
         foreach (var item in allItems)
         {
             if (item.obj != null)
@@ -76,12 +72,14 @@ public class FountainLevelManager : MonoBehaviour
 
         if (success)
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.winSound);
             winWindow.SetActive(true);
             PlayerPrefs.SetInt(gameKey, 1);
             PlayerPrefs.Save();
         }
         else
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.loseSound);
             loseWindow.SetActive(true);
         }
     }

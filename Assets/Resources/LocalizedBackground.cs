@@ -18,7 +18,6 @@ public class LocalizedBackground : MonoBehaviour
     void OnEnable()
     {
         UpdateBackground();
-        // Подписываемся на событие смены языка, как и в текстах
         if (LocalizationManager.Instance != null)
         {
             LocalizationManager.Instance.OnLanguageChanged += UpdateBackground;

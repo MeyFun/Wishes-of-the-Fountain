@@ -4,15 +4,14 @@ using System.Collections;
 public class FadeInSwitchWish : MonoBehaviour
 {
     [Header("Groups")]
-    public GameObject wishMenuUI;      // Группа "Экран с желанием"
-    public GameObject mainMenuUI;      // Группа "Главное меню"
+    public GameObject wishMenuUI;
+    public GameObject mainMenuUI;
     public GameObject startAnimNenu;
     public bool isStart;
-    public float fadeTime = 1.0f;      // Длительность анимации (1 секунда)
+    public float fadeTime = 1.0f;
 
     public void ReturnToMainMenu()
     {
-        // Проверка: если корутина уже запущена, не нажимать второй раз
         StopAllCoroutines();
         StartCoroutine(SwitchToMenuRoutine());
     }

@@ -12,8 +12,6 @@ public class SkipTimeline : MonoBehaviour
 
     void Update()
     {
-        // Проверяем, играет ли таймлайн в данный момент
-        // state == PlayState.Playing гарантирует, что мы не скипнем то, что не запущено
         if (director != null && director.state == PlayState.Playing)
         {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
@@ -27,14 +25,10 @@ public class SkipTimeline : MonoBehaviour
     {
         if (director == null) return;
 
-        // 1. Устанавливаем время на самый конец
-        // Вычитаем крошечное значение (0.01), чтобы сработали последние события (Signals)
+        AudioManager.instance.PlaySFX(AudioManager.instance.buttonSound);
         director.time = director.duration - 0.01;
-
-        // 2. Заставляем таймлайн мгновенно применить изменения
         director.Evaluate();
 
-        // 3. Останавливаем, если он не остановился сам
         director.Stop();
 
         Debug.Log("Таймлайн перемотан до финала.");

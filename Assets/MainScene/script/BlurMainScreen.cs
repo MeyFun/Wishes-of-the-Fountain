@@ -63,8 +63,6 @@ public class BlurMainScreen : MonoBehaviour
     }
 
 
-    // --- ЕДИНАЯ ЛОГИКА АНИМАЦИИ (Корутина) ---
-
     private void StartFade(float targetAlpha, bool isEntering, GameObject menuToEnable = null)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
@@ -83,58 +81,49 @@ public class BlurMainScreen : MonoBehaviour
         float startAlpha = normalBackground.color.a;
         float elapsedTime = 0f;
 
-        // Если выходим, сначала плавно скрываем элементы управления
         if (!isEntering && controlsCanvasGroup)
         {
-            yield return StartCoroutine(FadeControls(0f)); // Скрываем контроллы за половину времени
+            yield return StartCoroutine(FadeControls(0f));
         }
 
-        // Основной цикл анимации фона (замыливание/размыливание)
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / fadeDuration;
 
-            // Используем SmoothStep для более "мягкой" анимации в начале и конце
             float smoothedT = Mathf.SmoothStep(0f, 1f, t);
 
-            // Плавно интерполируем Alpha от стартовой до целевой
             float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, smoothedT);
             SetImageAlpha(normalBackground, newAlpha);
 
             yield return null;
         }
 
-        // Финально устанавливаем точное целевое значение
         SetImageAlpha(normalBackground, targetAlpha);
 
-        // Действия ПОСЛЕ завершения анимации фона
         if (isEntering)
         {
-            // Если входили, плавно включаем элементы управления
             if (controlsCanvasGroup)
             {
-                yield return StartCoroutine(FadeControls(1f)); // Показываем контроллы
+                yield return StartCoroutine(FadeControls(1f));
             }
         }
         else
         {
-            // Если выходили, выполняем переключение экранов
-            if (menuToEnable) menuToEnable.SetActive(true); // Включаем Главное Меню
-            gameObject.SetActive(false);                   // Выключаем Настройки
+            if (menuToEnable) menuToEnable.SetActive(true);
+            gameObject.SetActive(false);
         }
 
         fadeCoroutine = null;
     }
 
-    // Вспомогательная корутина для плавного появления/исчезновения панели контроллов
     IEnumerator FadeControls(float targetAlpha)
     {
         if (controlsCanvasGroup == null) yield break;
 
         float startAlpha = controlsCanvasGroup.alpha;
         float elapsedTime = 0f;
-        float duration = fadeDuration * 0.5f; // Анимация контроллов быстрее основной
+        float duration = fadeDuration * 0.5f;
 
         while (elapsedTime < duration)
         {
@@ -146,7 +135,6 @@ public class BlurMainScreen : MonoBehaviour
         controlsCanvasGroup.alpha = targetAlpha;
     }
 
-    // Вспомогательный метод для изменения Alpha канала
     private void SetImageAlpha(Image image, float alpha)
     {
         if (image != null)

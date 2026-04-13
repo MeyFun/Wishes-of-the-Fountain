@@ -14,8 +14,6 @@ public class DeliveryLevelManager : MonoBehaviour
 
     [Header("Settings")]
     public float roadSpeed = 400f;
-    public float carLaneSpeed = 500f;
-    public float xLimit = 300f;
     public string gameKey = "Level_Drive_Completed";
 
     private bool isPlaying = false;
@@ -35,7 +33,6 @@ public class DeliveryLevelManager : MonoBehaviour
     {
         isPlaying = false;
 
-        // Возвращаем дорогу и машину в начало
         roadParent.anchoredPosition = roadStartPos;
         playerCar.anchoredPosition = new Vector2(0, playerCar.anchoredPosition.y);
 
@@ -62,41 +59,38 @@ public class DeliveryLevelManager : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        // 1. Движение дороги
         roadParent.anchoredPosition += Vector2.down * roadSpeed * Time.deltaTime;
 
-        // 2. Управление машиной (влево-вправо)
         float moveInput = 0;
         if (Input.GetKey(KeyCode.LeftArrow)) moveInput = -1;
         if (Input.GetKey(KeyCode.RightArrow)) moveInput = 1;
 
-        Vector2 carPos = playerCar.anchoredPosition;
-        carPos.x += moveInput * carLaneSpeed * Time.deltaTime;
-        carPos.x = Mathf.Clamp(carPos.x, -xLimit, xLimit);
-        playerCar.anchoredPosition = carPos;
+        if (moveInput != 0)
+        {
+            playerCar.GetComponent<CarController>().Move(moveInput);
+        }
 
-        // 3. Проверка финиша по позиции
-        // Используем .position для сравнения мировых координат
         if (finishPoint.position.y <= playerCar.position.y)
         {
             GameOver(true);
         }
     }
 
-    // Этот метод теперь будет вызываться из скрипта на самой машине
     public void GameOver(bool success)
     {
-        if (!isPlaying) return; // Чтобы не срабатывало дважды
+        if (!isPlaying) return;
 
         isPlaying = false;
         if (success)
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.winSound);
             winWindow.SetActive(true);
             PlayerPrefs.SetInt(gameKey, 1);
             PlayerPrefs.Save();
         }
         else
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.loseSound);
             loseWindow.SetActive(true);
         }
     }

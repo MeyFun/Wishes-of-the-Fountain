@@ -2,27 +2,29 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    public float laneSpeed = 500f; // Скорость перемещения
-    public float xLimit = 300f;    // Ограничение по бокам (чтобы не уехать за экран)
+    public float laneSpeed = 500f;
+    public float xLimit = 300f;
 
     public DeliveryLevelManager levelManager;
 
     public void Move(float direction)
     {
+        if (!AudioManager.instance.sfxSource.isPlaying)
+        {
+            AudioManager.instance.PlaySFX(AudioManager.instance.carSound);
+        }
+
         Vector3 pos = transform.localPosition;
         pos.x += direction * laneSpeed * Time.deltaTime;
-
-        // Ограничиваем движение влево и вправо
         pos.x = Mathf.Clamp(pos.x, -xLimit, xLimit);
         transform.localPosition = pos;
     }
 
-    // Обработка столкновения
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Проверяем, что врезались именно в препятствие
         if (collision.CompareTag("Obstacle"))
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.carCrash);
             Debug.Log("Физическое столкновение с: " + collision.name);
             levelManager.GameOver(false);
         }

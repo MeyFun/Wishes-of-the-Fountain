@@ -7,18 +7,19 @@ public class BoyJudge : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Проверяем, не выключен ли скрипт (признак конца игры)
         if (levelManager.winWindow.activeSelf || levelManager.loseWindow.activeSelf) return;
 
         if (collision.CompareTag(correctObjectTag))
         {
             levelManager.GameOver(true);
-            collision.gameObject.SetActive(false); // Удаляем предмет, как ты просил
+            AudioManager.instance.PlaySFX(AudioManager.instance.launghBoySound);
+            collision.gameObject.SetActive(false);
         }
         else
         {
             levelManager.GameOver(false);
-            collision.gameObject.SetActive(false); // Удаляем предмет при ошибке
+            AudioManager.instance.PlaySFX(AudioManager.instance.cryBoySound);
+            collision.gameObject.SetActive(false);
         }
     }
 }

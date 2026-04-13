@@ -13,36 +13,35 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
-        startPosition = rectTransform.anchoredPosition; // Запоминаем место, если промахнемся мимо урны
+        startPosition = rectTransform.anchoredPosition;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvasGroup.alpha = 0.6f; // Делаем прозрачным при переносе
-        canvasGroup.blocksRaycasts = false; // Позволяет мышке "видеть" урну под предметом
+        AudioManager.instance.PlaySFX(AudioManager.instance.grabObjectSound);
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // Двигаем предмет за мышкой
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
-    {   
+    {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // Если при отпускании мышки под нами нет урны — возвращаем на место
         if (eventData.pointerEnter == null || eventData.pointerEnter.name != "TrashBin")
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.putObjectSound);
             rectTransform.anchoredPosition = startPosition;
         }
     }
 
-    // Вызывается менеджером, когда предмет попал в цель
     public void ItemCollected()
     {
-        gameObject.SetActive(false); // Убираем предмет
+        gameObject.SetActive(false);
     }
 }

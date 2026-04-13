@@ -1,39 +1,30 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-
-// Убедитесь, что у вас установлен TextMeshPro, если используете TMP_Text
 using TMPro;
 
 public class LocalizationManager : MonoBehaviour
 {
-    // Singletone-паттерн
     public static LocalizationManager Instance { get; private set; }
 
-    // Константы для языков (чтобы избежать опечаток)
     public const string LANG_RUS = "Russian";
     public const string LANG_ENG = "English";
 
-    // Текущий язык по умолчанию
     [SerializeField] private string currentLanguage = LANG_RUS;
 
-    // Словарь: Ключ -> (Язык -> Перевод)
-    // dictionary["menu_music"]["English"] = "Music"
     private Dictionary<string, Dictionary<string, string>> localizationData;
 
     private bool isReady = false;
 
-    // Событие, на которое подпишутся все TMP_Text объекты в игре
     public delegate void LanguageChangedHandler();
     public event LanguageChangedHandler OnLanguageChanged;
 
     void Awake()
     {
-        // Настройка Singletone
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Объект не уничтожается при смене сцен
+            DontDestroyOnLoad(gameObject);
             LoadLocalizationData();
         }
         else
@@ -47,25 +38,22 @@ public class LocalizationManager : MonoBehaviour
     {
         localizationData = new Dictionary<string, Dictionary<string, string>>();
 
-        // Загружаем файл как TextAsset ( Localization.csv в папке Assets/Resources)
         TextAsset csvFile = Resources.Load<TextAsset>("Localization");
         if (csvFile == null)
         {
-            Debug.LogError("Localization file not found in Resources/Localization.csv");
+            Debug.LogError("Localization file не найден в Resources/Localization.csv");
             return;
         }
 
         string[] lines = csvFile.text.Split('\n');
 
-        // Читаем первую строку, чтобы узнать названия языков
         string[] headers = lines[0].Trim().Split(',');
         List<string> languagesInFile = new List<string>();
-        for (int i = 1; i < headers.Length; i++) // Пропускаем Key (index 0)
+        for (int i = 1; i < headers.Length; i++)
         {
             languagesInFile.Add(headers[i]);
         }
 
-        // Читаем данные
         for (int i = 1; i < lines.Length; i++)
         {
             if (string.IsNullOrWhiteSpace(lines[i])) continue;
@@ -76,7 +64,6 @@ public class LocalizationManager : MonoBehaviour
             Dictionary<string, string> translations = new Dictionary<string, string>();
             for (int j = 1; j < row.Length; j++)
             {
-                // Если колонка в CSV существует для этого языка
                 if (j < headers.Length)
                 {
                     translations.Add(headers[j], row[j]);
@@ -94,10 +81,8 @@ public class LocalizationManager : MonoBehaviour
         }
 
         isReady = true;
-        Debug.Log("Localization Manager loaded " + localizationData.Count + " keys.");
     }
 
-    // Основная функция: Получение перевода по ключу
     public string GetTranslation(string key)
     {
         if (!isReady || localizationData == null) return $"[WAITING_{key}]";
@@ -111,17 +96,15 @@ public class LocalizationManager : MonoBehaviour
             }
             else
             {
-                // Если перевода на текущий язык нет, пробуем English (или Key)
-                Debug.LogWarning($"Translation for key '{key}' not found in {currentLanguage}. Trying defaults.");
-                if (translations.ContainsKey(LANG_ENG)) return translations[LANG_ENG];
+                Debug.LogWarning($"Ключа перевода '{key}' не найден в {currentLanguage}. Включаем русский");
+                if (translations.ContainsKey(LANG_RUS)) return translations[LANG_RUS];
                 return $"[MISSING_{key}_{currentLanguage}]";
             }
         }
 
-        return $"[KEY_NOT_FOUND_{key}]"; // Визуальная подсказка в игре, если ключа нет
+        return $"[KEY_NOT_FOUND_{key}]";
     }
 
-    // Функция для смены языка (например, из Настроек)
     public void ChangeLanguage(string newLanguage)
     {
         if (newLanguage != LANG_RUS && newLanguage != LANG_ENG)

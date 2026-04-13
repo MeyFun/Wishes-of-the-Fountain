@@ -4,12 +4,11 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour
 {
-    // Вспомогательный класс для инспектора
     [System.Serializable]
     public class GarbageItem
     {
         public GameObject gameObject;
-        public Vector2 startPosition; // Координаты запишем один раз и забудем
+        public Vector2 startPosition;
     }
 
     [Header("Settings")]
@@ -28,7 +27,6 @@ public class LevelManager : MonoBehaviour
     private int currentItems;
     private bool gameActive = false;
 
-    // Контекстное меню: нажми правой кнопкой на скрипт в инспекторе, чтобы запомнить позиции
     [ContextMenu("Запомнить текущие позиции мусора")]
     public void SaveCurrentPositions()
     {
@@ -50,7 +48,7 @@ public class LevelManager : MonoBehaviour
     public void ResetLevel()
     {
         timeLeft = initialTime;
-        currentItems = garbageItems.Count; // Теперь берем количество прямо из списка
+        currentItems = garbageItems.Count;
         gameActive = true;
 
         if (winWindow != null) winWindow.SetActive(false);
@@ -60,14 +58,11 @@ public class LevelManager : MonoBehaviour
         {
             if (item.gameObject != null)
             {
-                // 1. Сначала перемещаем
                 RectTransform rt = item.gameObject.GetComponent<RectTransform>();
                 rt.anchoredPosition = item.startPosition;
 
-                // 2. Включаем объект
                 item.gameObject.SetActive(true);
 
-                // 3. Сбрасываем блокировки (если есть CanvasGroup)
                 CanvasGroup cg = item.gameObject.GetComponent<CanvasGroup>();
                 if (cg != null)
                 {
@@ -80,7 +75,6 @@ public class LevelManager : MonoBehaviour
         if (timerText != null) timerText.color = Color.white;
     }
 
-    // --- Остальная логика без изменений ---
     void Update()
     {
         if (!gameActive) return;
@@ -113,10 +107,15 @@ public class LevelManager : MonoBehaviour
         gameActive = false;
         if (success)
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.winSound);
             winWindow.SetActive(true);
             PlayerPrefs.SetInt(gameKey, 1);
             PlayerPrefs.Save();
         }
-        else loseWindow.SetActive(true);
+        else
+        {
+            AudioManager.instance.PlaySFX(AudioManager.instance.loseSound);
+            loseWindow.SetActive(true);
+        }
     }
 }

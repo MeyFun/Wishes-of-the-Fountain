@@ -7,14 +7,14 @@ public class TrashBin : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        // Проверяем, что в нас бросили именно предмет
         if (eventData.pointerDrag != null)
         {
             DragAndDrop draggedItem = eventData.pointerDrag.GetComponent<DragAndDrop>();
             if (draggedItem != null)
             {
-                draggedItem.ItemCollected(); // Прячем предмет
-                levelManager.ObjectThrownInTrash(); // Сообщаем менеджеру
+                AudioManager.instance.PlaySFX(AudioManager.instance.putObjectSound);
+                draggedItem.ItemCollected();
+                levelManager.ObjectThrownInTrash();
                 Debug.Log("Предмет собран!");
             }
         }

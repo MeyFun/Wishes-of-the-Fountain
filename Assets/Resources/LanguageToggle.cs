@@ -5,31 +5,27 @@ using UnityEngine.UI;
 public class LanguageToggle : MonoBehaviour
 {
     [Header("Спрайты состояний")]
-    public Sprite rusActiveSprite; // Плашка, где светится РУС
-    public Sprite engActiveSprite; // Плашка, где светится ENG
+    public Sprite rusActiveSprite;
+    public Sprite engActiveSprite;
 
     private Image targetImage;
     private Toggle toggle;
 
     void Awake()
     {
-        // 1. Сначала находим компоненты
         targetImage = GetComponent<Image>();
         toggle = GetComponent<Toggle>();
 
-        // Проверка: если вдруг забыли добавить Image
         if (targetImage == null)
         {
             Debug.LogError($"На объекте {gameObject.name} нет компонента Image!");
         }
 
-        // Подписываемся на событие
         toggle.onValueChanged.AddListener(OnToggleChanged);
     }
 
     void Start()
     {
-        // Даем менеджеру локализации долю секунды на инициализацию
         Invoke(nameof(InitialSync), 0.05f);
     }
 
@@ -39,7 +35,6 @@ public class LanguageToggle : MonoBehaviour
         {
             bool isEnglish = LocalizationManager.Instance.GetCurrentLanguage() == LocalizationManager.LANG_ENG;
 
-            // Отключаем на мгновение слушатель, чтобы не вызывать ChangeLanguage при запуске
             toggle.onValueChanged.RemoveListener(OnToggleChanged);
             toggle.isOn = isEnglish;
             toggle.onValueChanged.AddListener(OnToggleChanged);
@@ -65,7 +60,6 @@ public class LanguageToggle : MonoBehaviour
 
     void UpdateVisual(bool isEnglish)
     {
-        // Проверка на null перед использованием (защита от ошибки в логе)
         if (targetImage != null)
         {
             targetImage.sprite = isEnglish ? engActiveSprite : rusActiveSprite;
