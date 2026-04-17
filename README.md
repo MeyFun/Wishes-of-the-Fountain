@@ -25,11 +25,7 @@
     * `Мышка` — Взаимодействие с объектами (поднять, отпустить).
 
 ## 🚀 Установка и запуск
-1. Склонируйте репозиторий:
-   ```bash
-   git clone [https://github.com/MeyFun/Wishes-of-the-Fountain.git](https://github.com/MeyFun/Wishes-of-the-Fountain.git)
-   ```
-2. Добавьте проект в Unity Hub и откройте его версией 6000.0.36f1.
-3. Дождитесь первичного импорта ассетов и генерации папки Library.
-
-Проект выполнен в рамках лабораторной работы №5-6 на тему «Проектирование 2D-игры для ПК».
+1. Перейдите в раздел [Releases](https://github.com/MeyFun/Wishes-of-the-Fountain/releases/tag/v1.0) на этом GitHub.
+2. Скачайте архив `Wishes_of_the_fountain_v1.0.rar`.
+3. Распакуйте архив в любую папку.
+4. Запустите файл `Wishes of the Fountain.exe`.
