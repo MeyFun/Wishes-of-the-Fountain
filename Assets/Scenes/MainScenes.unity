@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d499e1c74472860459a6fc50d1219f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  mainMixer: {fileID: 24100000, guid: 6ac0d2e8999d8ad4d8fef8bc9278d490, type: 2}
   musicSource: {fileID: 2387739}
   sfxSource: {fileID: 2387738}
   mainMenuMusic: {fileID: 8300000, guid: 416b34dcc1260ed45b496b3b4cd0ff74, type: 3}
